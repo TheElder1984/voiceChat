@@ -1,1 +1,6 @@
-
+speechrecognition
+pyttsx3
+openai-whisper
+requests
+pyaudio
+torch[cuda]
