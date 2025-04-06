@@ -3,23 +3,25 @@ import requests
 import pyttsx3
 import tempfile
 import whisper
+import scipy.io.wavfile
 
 model = whisper.load_model("medium")  # or "small", "medium", "large"
 
 
-def capture_voice():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("Speak now...")
-        audio = r.listen(source)
+def capture_voice(duration=5, sample_rate=16000):
+    print("Speak now...")
+    recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype=np.float32)
+    sd.wait()
+    audio_data = np.squeeze(recording)
 
-    try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp:
-            wav_path = temp.name
-            with open(wav_path, "wb") as f:
-                f.write(audio.get_wav_data())
-        
-        result = model.transcribe(wav_path)
+    # Save to temporary WAV file
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+        wav_path = f.name
+        scipy.io.wavfile.write(wav_path, sample_rate, audio_data)
+
+    result = model.transcribe(wav_path)
+    print("You said:", result["text"])
+    return result["text"]
         print("You said:", result["text"])
         return result["text"]
     except Exception as e:
