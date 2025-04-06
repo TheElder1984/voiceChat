@@ -1,23 +1,30 @@
 import speech_recognition as sr
 import requests
 import pyttsx3
+import tempfile
+import whisper
 
-LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
+model = whisper.load_model("medium")  # or "small", "medium", "large"
 
-engine = pyttsx3.init()
 
 def capture_voice():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Speak now...")
         audio = r.listen(source)
-        try:
-            text = r.recognize_whisper(audio)
-            print("You said:", text)
-            return text
-        except Exception as e:
-            print("Error:", e)
-            return ""
+
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp:
+            wav_path = temp.name
+            with open(wav_path, "wb") as f:
+                f.write(audio.get_wav_data())
+        
+        result = model.transcribe(wav_path)
+        print("You said:", result["text"])
+        return result["text"]
+    except Exception as e:
+        print("Error:", e)
+        return ""
 
 def chat_with_gemma(prompt):
     try:
