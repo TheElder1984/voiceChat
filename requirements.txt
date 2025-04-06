@@ -2,5 +2,5 @@ speechrecognition
 pyttsx3
 openai-whisper
 requests
-pyaudio
+sounddevice
 torch[cuda]
