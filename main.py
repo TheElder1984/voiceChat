@@ -5,6 +5,7 @@ import pyttsx3
 import tempfile
 import whisper
 import scipy.io.wavfile
+import numpy as np
 
 model = whisper.load_model("medium")  # or "small", "medium", "large"
 
