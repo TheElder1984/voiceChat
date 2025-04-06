@@ -22,11 +22,6 @@ def capture_voice(duration=5, sample_rate=16000):
     result = model.transcribe(wav_path)
     print("You said:", result["text"])
     return result["text"]
-        print("You said:", result["text"])
-        return result["text"]
-    except Exception as e:
-        print("Error:", e)
-        return ""
 
 def chat_with_gemma(prompt):
     try:
