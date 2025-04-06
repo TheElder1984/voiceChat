@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import sounddevice as sd
 import requests
 import pyttsx3
 import tempfile
