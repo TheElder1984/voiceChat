@@ -1,47 +1,42 @@
+# Voice Gemma Chat (GUI Edition)
 
-# Voice Gemma Chat
-
-Voice Gemma Chat is a Python-based voice assistant that integrates:
-- OpenAI Whisper for speech recognition
-- LM Studio with the Gemma model for local language processing
-- Text-to-speech (TTS) using pyttsx3 for spoken responses
+A GUI-based Python assistant app that combines:
+- OpenAI Whisper for voice transcription
+- Local LLM (Gemma via LM Studio)
+- TTS via pyttsx3
+- Tkinter GUI for a better user experience
 
 ## Features
-- Voice input via microphone
-- Real-time interaction with the Gemma LLM
-- Spoken replies using built-in TTS
+- One-click voice input
+- Real-time responses from Gemma
+- Markdown-cleaned spoken responses
 
 ## Prerequisites
 - Python 3.10+
-- [LM Studio](https://lmstudio.ai/) installed and running with the Gemma model
-- LM Studio API enabled (default: http://localhost:1234)
+- LM Studio with Gemma model running and API enabled (http://localhost:1234)
+- Microphone access
 
 ## Installation
-Clone the repository and install dependencies:
-
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
-Ensure LM Studio is running and listening on the API port. Then start the application:
-
 ```bash
 python main.py
 ```
 
-Say "exit" or "quit" to stop the session.
+Click the microphone button and start speaking. Say "exit" or close the window to stop.
 
 ## Notes
-- Microphone access is required
-- Responses depend on the quality of the voice input and the configured model in LM Studio
+- TTS removes markdown symbols to improve audio clarity.
+- Ensure microphone access is allowed.
+- If PyAudio gives install errors, use sounddevice instead.
 
 ## License
-MIT License
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+MIT
 
 ## Acknowledgments
-- [OpenAI Whisper](https://github.com/openai/whisper)
-- [LM Studio](https://lmstudio.ai/)
+- Whisper by OpenAI
+- Gemma via LM Studio
+- Python TTS and GUI libraries
