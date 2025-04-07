@@ -34,7 +34,7 @@ Click the microphone button and start speaking. Say "exit" or close the window t
 - If PyAudio gives install errors, use sounddevice instead.
 
 ## License
-MIT
+GPL 2.0
 
 ## Acknowledgments
 - Whisper by OpenAI
