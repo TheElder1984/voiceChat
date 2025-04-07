@@ -6,6 +6,9 @@ import whisper
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import threading
+import sounddevice as sd
+import numpy as np
+import scipy.io.wavfile
 
 LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
 model = whisper.load_model("base")
@@ -22,16 +25,15 @@ def speak(text):
     except Exception as e:
         print("TTS error:", e)
 
-def capture_voice():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        append_text("Listening...")
-        audio = recognizer.listen(source)
+def capture_voice(duration=5, sample_rate=16000):
+    append_text("Listening...")
+    recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype=np.float32)
+    sd.wait()
+    audio_data = np.squeeze(recording)
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp:
-        wav_path = temp.name
-        with open(wav_path, "wb") as f:
-            f.write(audio.get_wav_data())
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+        wav_path = f.name
+        scipy.io.wavfile.write(wav_path, sample_rate, audio_data)
 
     result = model.transcribe(wav_path)
     return result["text"]
@@ -72,7 +74,7 @@ def on_start():
 # GUI Setup
 root = tk.Tk()
 root.title("Voice Assistant - Gemma")
-root.geometry("1200x720")
+root.geometry("600x400")
 
 output_text = ScrolledText(root, wrap=tk.WORD, state="disabled", font=("Arial", 12))
 output_text.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
@@ -81,4 +83,3 @@ record_button = tk.Button(root, text="🎤 Speak", command=on_start, font=("Aria
 record_button.pack(pady=10)
 
 root.mainloop()
-
