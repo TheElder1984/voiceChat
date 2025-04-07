@@ -74,7 +74,7 @@ def on_start():
 # GUI Setup
 root = tk.Tk()
 root.title("Voice Assistant - Gemma")
-root.geometry("600x400")
+root.geometry("1200x720")
 
 output_text = ScrolledText(root, wrap=tk.WORD, state="disabled", font=("Arial", 12))
 output_text.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
