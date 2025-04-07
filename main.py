@@ -68,11 +68,18 @@ def append_text(text):
     output_text.config(state="disabled")
     output_text.see(tk.END)
 
+def stop_speaking():
+    try:
+        engine.stop()
+        stop_tts.set()
+    except Exception as e:
+        print("Stop TTS error:", e)
+
 def on_start():
     threading.Thread(target=run_conversation).start()
 
 def on_stop():
-    threading.Thread(target=run_conversation)._stop()
+    stop_speaking()
 
 # GUI Setup
 root = tk.Tk()
