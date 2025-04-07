@@ -1,28 +1,39 @@
 import speech_recognition as sr
-import sounddevice as sd
 import requests
 import pyttsx3
 import tempfile
 import whisper
-import scipy.io.wavfile
-import numpy as np
+import tkinter as tk
+from tkinter.scrolledtext import ScrolledText
+import threading
 
-model = whisper.load_model("medium")  # or "small", "medium", "large"
+LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
+model = whisper.load_model("base")
 
+engine = pyttsx3.init()
+engine.setProperty('rate', 170)
 
-def capture_voice(duration=5, sample_rate=16000):
-    print("Speak now...")
-    recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype=np.float32)
-    sd.wait()
-    audio_data = np.squeeze(recording)
+def speak(text):
+    try:
+        import re
+        plain_text = re.sub(r'[\*_`>#\-]', '', text)  # Strip simple Markdown
+        engine.say(plain_text)
+        engine.runAndWait()
+    except Exception as e:
+        print("TTS error:", e)
 
-    # Save to temporary WAV file
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-        wav_path = f.name
-        scipy.io.wavfile.write(wav_path, sample_rate, audio_data)
+def capture_voice():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        append_text("Listening...")
+        audio = recognizer.listen(source)
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp:
+        wav_path = temp.name
+        with open(wav_path, "wb") as f:
+            f.write(audio.get_wav_data())
 
     result = model.transcribe(wav_path)
-    print("You said:", result["text"])
     return result["text"]
 
 def chat_with_gemma(prompt):
@@ -40,22 +51,34 @@ def chat_with_gemma(prompt):
         reply = response.json()["choices"][0]["message"]["content"]
         return reply
     except Exception as e:
-        return f"Error communicating with Gemma: {e}"
+        return f"Error: {e}"
 
-def speak(text):
-    engine.say(text)
-    engine.runAndWait()
+def run_conversation():
+    user_text = capture_voice()
+    append_text("You: " + user_text)
+    reply = chat_with_gemma(user_text)
+    append_text("Gemma: " + reply)
+    speak(reply)
 
-def main():
-    print("=== Voice Chat with Gemma ===")
-    print("Say 'exit' to quit.")
-    while True:
-        user_input = capture_voice()
-        if user_input.strip().lower() in ["exit", "quit"]:
-            break
-        reply = chat_with_gemma(user_input)
-        print("Gemma:", reply)
-        speak(reply)
+def append_text(text):
+    output_text.config(state="normal")
+    output_text.insert(tk.END, text + "\n")
+    output_text.config(state="disabled")
+    output_text.see(tk.END)
 
-if __name__ == "__main__":
-    main()
+def on_start():
+    threading.Thread(target=run_conversation).start()
+
+# GUI Setup
+root = tk.Tk()
+root.title("Voice Assistant - Gemma")
+root.geometry("1200x720")
+
+output_text = ScrolledText(root, wrap=tk.WORD, state="disabled", font=("Arial", 12))
+output_text.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+record_button = tk.Button(root, text="🎤 Speak", command=on_start, font=("Arial", 14))
+record_button.pack(pady=10)
+
+root.mainloop()
+
