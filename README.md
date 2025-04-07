@@ -1,4 +1,4 @@
-# Voice Gemma Chat (GUI Edition)
+# Voice Chat (GUI Edition) - demo and a test solution
 
 A GUI-based Python assistant app that combines:
 - OpenAI Whisper for voice transcription
@@ -9,10 +9,10 @@ A GUI-based Python assistant app that combines:
 ## Features
 - One-click voice input
 - Live transcription via Whisper
-- Real-time responses from Gemma
+- Real-time responses from Gemma or any other LLM available in LM Studio
 - Markdown and emoji are stripped from spoken text
 - Stop button to interrupt speech immediately
-- TTS runs in a separate thread using Microsoft Edge TTS
+- TTS runs in a separate thread using Edge TTS
 - SoundDevice-based recording for smoother audio capture
 
 ## Prerequisites
@@ -40,7 +40,7 @@ Click the microphone button and start speaking. Use the stop button to interrupt
 - Ensure microphone access is allowed.
 
 ## License
-MIT
+GPL
 
 ## Acknowledgments
 - Whisper by OpenAI
