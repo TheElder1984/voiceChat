@@ -71,6 +71,9 @@ def append_text(text):
 def on_start():
     threading.Thread(target=run_conversation).start()
 
+def on_stop():
+    threading.Thread(target=run_conversation).stop()
+
 # GUI Setup
 root = tk.Tk()
 root.title("Voice Assistant - Gemma")
@@ -81,5 +84,8 @@ output_text.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
 record_button = tk.Button(root, text="🎤 Speak", command=on_start, font=("Arial", 14))
 record_button.pack(pady=10)
+stop_button = tk.Button(root, text = "Stop", command = on_stop, font=("Arial", 14))
+stop_button.pack(pady=10)
+
 
 root.mainloop()
