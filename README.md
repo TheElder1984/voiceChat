@@ -1,8 +1,8 @@
 # Voice Chat (GUI Edition) - demo and a test solution
 
 A GUI-based Python assistant app that combines:
-- OpenAI Whisper for voice transcription
-- Local LLM (Gemma via LM Studio)
+- Whisper for voice transcription
+- Local LLM (e.g. Gemma via LM Studio)
 - TTS via Edge TTS with ffplay playback
 - Tkinter GUI for a better user experience
 
