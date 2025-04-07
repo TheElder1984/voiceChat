@@ -15,6 +15,7 @@ model = whisper.load_model("base")
 
 engine = pyttsx3.init()
 engine.setProperty('rate', 100)
+stop_tts = threading.Event()
 
 def speak(text):
     try:
