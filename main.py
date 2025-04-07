@@ -72,7 +72,7 @@ def on_start():
     threading.Thread(target=run_conversation).start()
 
 def on_stop():
-    threading.Thread(target=run_conversation).stop()
+    threading.Thread(target=run_conversation)._stop()
 
 # GUI Setup
 root = tk.Tk()
