@@ -14,7 +14,7 @@ LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
 model = whisper.load_model("base")
 
 engine = pyttsx3.init()
-engine.setProperty('rate', 170)
+engine.setProperty('rate', 100)
 
 def speak(text):
     try:
@@ -67,8 +67,9 @@ def append_text(text):
     output_text.insert(tk.END, text + "\n")
     output_text.config(state="disabled")
     output_text.see(tk.END)
-
+    
 def stop_speaking():
+    global stop_tts
     try:
         engine.stop()
         stop_tts.set()
