@@ -44,6 +44,6 @@ GPL
 
 ## Acknowledgments
 - Whisper by OpenAI
-- Gemma via LM Studio
-- Edge TTS by Microsoft
+- an LLM via LM Studio
+- Edge TTS
 - Python TTS and GUI libraries
