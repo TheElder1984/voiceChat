@@ -12,16 +12,19 @@ import re
 import asyncio
 import edge_tts
 import os
+import subprocess
 
 LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
 model = whisper.load_model("base")
 
 tts_cancelled = threading.Event()
 tts_thread = None
+ffplay_proc = None
 
 def speak(text):
     async def run_edge_tts():
         try:
+            global ffplay_proc
             # Strip simple Markdown and emoji
             plain_text = re.sub(r'[\*_`>#\-]', '', text)
             plain_text = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002600-\U000026FF\U00002700-\U000027BF]+', '', plain_text)
@@ -30,7 +33,12 @@ def speak(text):
             communicate = edge_tts.Communicate(text=plain_text, voice="en-US-AriaNeural")
             await communicate.save(temp_audio.name)
             if not tts_cancelled.is_set():
-                os.system(f"ffplay -nodisp -autoexit -loglevel quiet {temp_audio.name}")
+                ffplay_proc = subprocess.Popen(
+                    ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", temp_audio.name],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+                ffplay_proc.wait()
             os.unlink(temp_audio.name)
         except Exception as e:
             print("TTS error:", e)
@@ -41,9 +49,13 @@ def speak(text):
     tts_thread.start()
 
 def stop_speaking():
-    global tts_cancelled
+    global tts_cancelled, ffplay_proc
     tts_cancelled.set()
-    # Playback is handled by ffplay, which exits automatically with stop signal
+    if ffplay_proc and ffplay_proc.poll() is None:
+        try:
+            ffplay_proc.terminate()
+        except Exception as e:
+            print("Failed to terminate ffplay:", e)
 
 
 def capture_voice(duration=5, sample_rate=16000):
