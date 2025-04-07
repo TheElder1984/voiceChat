@@ -43,7 +43,7 @@ Click the microphone button and start speaking. Use the stop button to interrupt
 GPL
 
 ## Acknowledgments
-- Whisper by OpenAI
+- Whisper
 - an LLM via LM Studio
 - Edge TTS
 - Python TTS and GUI libraries
