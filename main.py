@@ -1,6 +1,5 @@
 import speech_recognition as sr
 import requests
-import pyttsx3
 import tempfile
 import whisper
 import tkinter as tk
@@ -10,43 +9,41 @@ import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile
 import re
-import time
+import asyncio
+import edge_tts
+import os
 
 LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
 model = whisper.load_model("base")
 
-engine = pyttsx3.init()
-engine.setProperty('rate', 170)
 tts_cancelled = threading.Event()
 tts_thread = None
 
 def speak(text):
-    def run_tts():
+    async def run_edge_tts():
         try:
             # Strip simple Markdown and emoji
-            plain_text = re.sub(r'[\*_`>#\-]', '', text)  # Markdown
+            plain_text = re.sub(r'[\*_`>#\-]', '', text)
             plain_text = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002600-\U000026FF\U00002700-\U000027BF]+', '', plain_text)
-            sentences = re.split(r'(?<=[.!?]) +', plain_text)
-            for sentence in sentences:
-                if tts_cancelled.is_set():
-                    break
-                engine.say(sentence)
-                engine.runAndWait()
+
+            temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
+            communicate = edge_tts.Communicate(text=plain_text, voice="en-US-AriaNeural")
+            await communicate.save(temp_audio.name)
+            if not tts_cancelled.is_set():
+                os.system(f"ffplay -nodisp -autoexit -loglevel quiet {temp_audio.name}")
+            os.unlink(temp_audio.name)
         except Exception as e:
             print("TTS error:", e)
 
     global tts_thread
     tts_cancelled.clear()
-    tts_thread = threading.Thread(target=run_tts)
+    tts_thread = threading.Thread(target=lambda: asyncio.run(run_edge_tts()))
     tts_thread.start()
 
 def stop_speaking():
     global tts_cancelled
     tts_cancelled.set()
-    try:
-        engine.stop()
-    except Exception as e:
-        print("Stop TTS error:", e)
+    # Playback is handled by ffplay, which exits automatically with stop signal
 
 
 def capture_voice(duration=5, sample_rate=16000):
