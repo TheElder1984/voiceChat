@@ -3,17 +3,22 @@
 A GUI-based Python assistant app that combines:
 - OpenAI Whisper for voice transcription
 - Local LLM (Gemma via LM Studio)
-- TTS via pyttsx3
+- TTS via Edge TTS with ffplay playback
 - Tkinter GUI for a better user experience
 
 ## Features
 - One-click voice input
+- Live transcription via Whisper
 - Real-time responses from Gemma
-- Markdown-cleaned spoken responses
+- Markdown and emoji are stripped from spoken text
+- Stop button to interrupt speech immediately
+- TTS runs in a separate thread using Microsoft Edge TTS
+- SoundDevice-based recording for smoother audio capture
 
 ## Prerequisites
 - Python 3.10+
 - LM Studio with Gemma model running and API enabled (http://localhost:1234)
+- ffplay (from ffmpeg) must be installed and available in PATH
 - Microphone access
 
 ## Installation
@@ -26,17 +31,19 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Click the microphone button and start speaking. Say "exit" or close the window to stop.
+Click the microphone button and start speaking. Use the stop button to interrupt speech output. Say "exit" or close the window to stop.
 
 ## Notes
-- TTS removes markdown symbols to improve audio clarity.
+- TTS removes markdown and emojis to improve audio clarity.
+- Uses SoundDevice + Whisper for accurate voice capture.
+- Uses Edge TTS for responsive and high-quality speech.
 - Ensure microphone access is allowed.
-- If PyAudio gives install errors, use sounddevice instead.
 
 ## License
-GPL 2.0
+MIT
 
 ## Acknowledgments
 - Whisper by OpenAI
 - Gemma via LM Studio
+- Edge TTS by Microsoft
 - Python TTS and GUI libraries
