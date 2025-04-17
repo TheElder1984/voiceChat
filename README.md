@@ -1,4 +1,4 @@
-# Voice Chat (GUI Edition) - demo and a test solution
+# Srpski glasovni asistent za Linuks
 
 A GUI-based Python assistant app that combines:
 - Whisper for voice transcription
