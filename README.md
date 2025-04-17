@@ -3,7 +3,7 @@
 A GUI-based Python assistant app that combines:
 - Whisper for voice transcription
 - Local LLM (e.g. Gemma via LM Studio)
-- TTS via Edge TTS with ffplay playback
+- TTS RHVoice with ffplay playback
 - Tkinter GUI for a better user experience
 
 ## Features
@@ -12,7 +12,7 @@ A GUI-based Python assistant app that combines:
 - Real-time responses from Gemma or any other LLM available in LM Studio
 - Markdown and emoji are stripped from spoken text
 - Stop button to interrupt speech immediately
-- TTS runs in a separate thread using Edge TTS
+- TTS runs in a separate thread using RHVoice
 - SoundDevice-based recording for smoother audio capture
 
 ## Prerequisites
@@ -36,7 +36,7 @@ Click the microphone button and start speaking. Use the stop button to interrupt
 ## Notes
 - TTS removes markdown and emojis to improve audio clarity.
 - Uses SoundDevice + Whisper for accurate voice capture.
-- Uses Edge TTS for responsive and high-quality speech.
+- Uses RHVoice (rhvoice-macedonian) and high-quality speech.
 - Ensure microphone access is allowed.
 
 ## License
@@ -45,5 +45,5 @@ GPL
 ## Acknowledgments
 - Whisper
 - an LLM via LM Studio
-- Edge TTS
+- RHVoice
 - Python TTS and GUI libraries
