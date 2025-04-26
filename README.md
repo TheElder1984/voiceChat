@@ -44,6 +44,17 @@ GPL
 
 ## Acknowledgments
 - Whisper
-- an LLM via LM Studio
-- RHVoice
+- an LLM via LM Studio [https://github.com/lmstudio-ai]
+- RHVoice [https://github.com/RHVoice/RHVoice]
 - Python TTS and GUI libraries
+
+
+Want to customize or extend it?
+
+    Try swapping the speech engine (e.g., Edge TTS, eSpeak, OpenAI Whisper).
+
+    Add your favorite GUI tweaks!
+
+    Hook up another model from LM Studio or Ollama!
+
+If you like it, feel free to ⭐️ the repo and share your experiments!
