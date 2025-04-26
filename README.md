@@ -1,5 +1,14 @@
 # Srpski glasovni asistent za Linuks
 
+
+
+![](https://github.com/TheElder1984/voiceChat/blob/4e762182867d0d92ace8f6ca25ff0e92e1418275/Zomi.png)
+
+
+
+
+
+
 A GUI-based Python assistant app that combines:
 - Whisper for voice transcription
 - Local LLM (e.g. Gemma via LM Studio)
