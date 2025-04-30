@@ -23,7 +23,7 @@ chat_history = [{"role": "system", "content": "Ti si korisni asistent."}]
 def speak(text):
     try:
         result = subprocess.run(
-            ["say", text], 
+            ["espeak", "-v", "Serbian", text], 
             capture_output=True, text=True
         )
         if result.returncode != 0:
