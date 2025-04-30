@@ -1,5 +1,14 @@
 # Srpski glasovni asistent za Linuks
 
+
+
+![](https://github.com/TheElder1984/voiceChat/blob/4e762182867d0d92ace8f6ca25ff0e92e1418275/Zomi.png)
+
+
+
+
+
+
 A GUI-based Python assistant app that combines:
 - Whisper for voice transcription
 - Local LLM (e.g. Gemma via LM Studio)
@@ -44,6 +53,17 @@ GPL
 
 ## Acknowledgments
 - Whisper
-- an LLM via LM Studio
-- RHVoice
+- an LLM via LM Studio [https://github.com/lmstudio-ai]
+- RHVoice [https://github.com/RHVoice/RHVoice]
 - Python TTS and GUI libraries
+
+
+Want to customize or extend it?
+
+    Try swapping the speech engine (e.g., Edge TTS, eSpeak, OpenAI Whisper).
+
+    Add your favorite GUI tweaks!
+
+    Hook up another model from LM Studio or Ollama!
+
+If you like it, feel free to ⭐️ the repo and share your experiments!
